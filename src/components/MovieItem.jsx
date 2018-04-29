@@ -11,7 +11,7 @@ export default class MovieItem extends React.Component {
     }
 
     render() {
-        const { item } = this.props;
+        const { item = {}, markMovieAsFavourited = () => { } } = this.props;
         // console.log("state of MovieItem", this.state);
         // console.log("props", this.props);
         console.log(this.props);
@@ -28,6 +28,11 @@ export default class MovieItem extends React.Component {
                     <p>Likes: {this.state.likeCount}</p>
                     <button
                         onClick={() => {
+
+                            if (!this.state.likeCount) {
+                                markMovieAsFavourited();
+                            }
+
                             this.setState({
                                 likeCount: ++this.state.likeCount
                             });

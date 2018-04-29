@@ -8,6 +8,7 @@ class App extends React.Component {
 
     this.state = {
       movies: [],
+      favouritedMoviesCounter: 0,
       isFetched: false
     };
   }
@@ -19,7 +20,7 @@ class App extends React.Component {
     // console.log(link);
     setTimeout(() => {
       fetch(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY_3}&language=en-US&region=ru&page=1`
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY_3}&language=en-US&region=ua&page=1`
       )
         .then(response => {
           return response.json();
@@ -33,22 +34,34 @@ class App extends React.Component {
     }, 5000);
   }
 
+  markMovieAsFavourited = () => {
+
+    this.setState({
+      favouritedMoviesCounter: ++this.state.favouritedMoviesCounter
+    });
+  }
+
   render() {
     // console.log("state of App", this.state);
     return (
       <div className="container">
         <div className="row">
+          {this.state.isFetched ?
+            <div className="card w-100 text-center">
+              Favourited movies: {this.state.favouritedMoviesCounter}
+            </div> :
+            ""}
           {this.state.isFetched ? (
             this.state.movies.map(item => {
               return (
                 <div className="col-6" key={item.id}>
-                  <MovieItem item={item} />
+                  <MovieItem item={item} markMovieAsFavourited={this.markMovieAsFavourited} />
                 </div>
               );
             })
           ) : (
-            <p>...Loading</p>
-          )}
+              <p>...Loading</p>
+            )}
         </div>
       </div>
     );
