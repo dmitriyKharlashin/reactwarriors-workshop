@@ -1,37 +1,18 @@
 import React from "react";
-import MovieItem from "./MovieItem";
-import { API_KEY_3 } from "../utils";
+import MovieList from "./MovieList";
+import MovieTabs from "./MovieTabs";
+import LoginForm from './LoginForm';
 
 class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      movies: [],
+      type: 'now_playing',
       favouritedMoviesCounter: 0,
-      isFetched: false
+      user: null,
+      session_id: null
     };
-  }
-
-  componentDidMount() {
-    // let link = "https://api.themoviedb.org/3/movie/now_playing?api_key=";
-    // link = link + API_KEY_3;
-    // link = link + "&language=en-US&region=ru&page=1";
-    // console.log(link);
-    setTimeout(() => {
-      fetch(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY_3}&language=en-US&region=ua&page=1`
-      )
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          this.setState({
-            movies: data.results,
-            isFetched: true
-          });
-        });
-    }, 5000);
   }
 
   markMovieAsFavourited = () => {
@@ -39,30 +20,46 @@ class App extends React.Component {
     this.setState({
       favouritedMoviesCounter: ++this.state.favouritedMoviesCounter
     });
+
+  }
+
+  changeTab = tab => {
+    console.log('tab changed!', tab);
+
+    this.setState({
+      type: tab
+    });
+
   }
 
   render() {
-    // console.log("state of App", this.state);
+    const { type, session_id } = this.state;
     return (
-      <div className="container">
-        <div className="row">
-          {this.state.isFetched ?
-            <div className="card w-100 text-center">
-              Favourited movies: {this.state.favouritedMoviesCounter}
-            </div> :
-            ""}
-          {this.state.isFetched ? (
-            this.state.movies.map(item => {
-              return (
-                <div className="col-6" key={item.id}>
-                  <MovieItem item={item} markMovieAsFavourited={this.markMovieAsFavourited} />
-                </div>
-              );
-            })
-          ) : (
-              <p>...Loading</p>
-            )}
-        </div>
+      <div>
+        {session_id ? (
+          <div className="container">
+            <button
+              onClick={() => {
+                this.forceUpdate();
+              }}
+            >
+              Update
+            </button>
+            <button
+              onClick={() => {
+                this.setState({
+                  showList: false
+                });
+              }}
+            >
+              Hide list
+            </button>
+            <MovieTabs type={type} changeTab={this.changeTab} />
+            {this.state.showList ? <MovieList type={type} /> : null}
+          </div>
+        ) : (
+            <LoginForm />
+          )}
       </div>
     );
   }
