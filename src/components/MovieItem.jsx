@@ -16,10 +16,11 @@ export default class MovieItem extends React.Component {
         // console.log("props", this.props);
         console.log(this.props);
         return (
-            <div className="card" style={{ width: "100%" }}>
+            <div className="card" style={{ width: "100%", marginBottom: "15px" }}>
                 <img
                     className="card-img-top"
-                    src={`https://image.tmdb.org/t/p/w500${item.backdrop_path}`}
+                    style={{ width: '100%', maxHeight: '281px' }}
+                    src={`https://image.tmdb.org/t/p/w500${item.backdrop_path || item.poster_path}`}
                     alt=""
                 />
                 <div className="card-body">
