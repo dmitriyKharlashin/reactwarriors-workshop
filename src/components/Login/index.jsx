@@ -94,8 +94,7 @@ export default class LoginForm extends Component {
             errorsArray.passwordRepeat = 'Passwords are not match';
         }
 
-        if (errorsArray.length > 0) {
-
+        if (Object.keys(errorsArray).length > 0) {
             this.setState({
                 errors: errorsArray
             });
@@ -118,7 +117,7 @@ export default class LoginForm extends Component {
                         <input
                             type="text"
                             className={classNames("form-control", {
-                                invalid: errors.global || errors.username
+                                invalid: errors.username || errors.global
                             })}
                             id="username"
                             name="username"
@@ -128,13 +127,13 @@ export default class LoginForm extends Component {
                             onChange={this.handleChange}
                         />
                     </div>
-                    {errors.username && (<div className="invalid-feedback">{errors.username}</div>)}
+                    {errors.username ? (<div className="invalid-feedback">{errors.username}</div>) : null}
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
                         <input
                             type="password"
                             className={classNames('form-control',
-                                { invalid: errors.global || errors.password }
+                                { invalid: errors.password || errors.global }
                             )}
                             id="password"
                             name="password"
@@ -150,7 +149,7 @@ export default class LoginForm extends Component {
                         <input
                             type="password"
                             className={classNames("form-control", {
-                                invalid: errors.global || errors.passwordRepeat
+                                invalid: errors.passwordRepeat || errors.global
                             })}
                             id="repeat-password"
                             name="passwordRepeat"
@@ -161,7 +160,7 @@ export default class LoginForm extends Component {
                         />
                     </div>
                     {errors.passwordRepeat && (<div className="invalid-feedback">{errors.passwordRepeat}</div>)}
-                    {errors.global && (<div className="invalid-feedback">{errors.global}</div>)}
+                    {errors.global && (<div className="invalid-feedback">{errors.global.message}</div>)}
                     <button type="submit" className="btn btn-lg btn-primary btn-block" onClick={this.onSubmit}>
                         Sign in
           </button>

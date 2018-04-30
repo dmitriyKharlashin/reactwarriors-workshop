@@ -4,6 +4,7 @@ import LoginForm from './Login';
 import Loader from "./Loader";
 import { API_MOVIE_DB_URL, prepareGetParams, API_KEY_3 } from '../utils';
 import Cookies from 'universal-cookie';
+import moment from 'moment';
 
 class App extends Component {
   constructor() {
@@ -35,7 +36,8 @@ class App extends Component {
     if (!session_id) return;
 
     const cookie = new Cookies();
-    cookie.set('session_id', session_id, { path: '/' });
+    const expirationDate = moment().add('30', 'minutes');
+    cookie.set('session_id', session_id, { path: '/', expires: expirationDate.toDate() });
     this.setState({
       session_id: session_id
     });
@@ -62,10 +64,15 @@ class App extends Component {
   }
 
   resetUser = user => {
+
     this.setState({
       user: null,
       session_id: null
     });
+
+    const cookie = new Cookies();
+    const expirationDate = moment().subtract('30', 'minutes');
+    cookie.set('session_id', this.state.session_id, { path: '/', expires: expirationDate.toDate() });
   }
 
   render() {
