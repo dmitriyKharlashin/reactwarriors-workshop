@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MovieList from "./MovieList";
 import MovieTabs from "./MovieTabs";
 import LoginForm from './Login';
+import Loader from "./Loader";
 import { API_MOVIE_DB_URL, prepareGetParams, API_KEY_3 } from '../utils';
 import Cookies from 'universal-cookie';
 
@@ -13,6 +14,7 @@ class App extends Component {
     this.state = {
       type: 'now_playing',
       favouritedMoviesCounter: 0,
+      isLoaded: false,
       user: null,
       session_id: null
     };
@@ -25,6 +27,10 @@ class App extends Component {
 
     if (session_id !== null && session_id !== undefined) {
       this.getUser(session_id);
+    } else {
+      this.setState({
+        isLoaded: true
+      });
     }
   }
 
@@ -70,22 +76,26 @@ class App extends Component {
 
   updateUser = user => {
     this.setState({
-      user: user
+      user: user,
+      isLoaded: true
     })
   }
 
   render() {
-    const { type, session_id, user } = this.state;
+    const { type, session_id, user, isLoaded } = this.state;
     return (
       <div>
-        {user ? (
-          <div className="container">
-            <MovieTabs type={type} changeTab={this.changeTab} />
-            {this.state.showList ? <MovieList type={type} /> : null}
-          </div>
-        ) : (
-            <LoginForm getUser={this.getUser} />
-          )}
+        {!isLoaded ?
+          <Loader /> :
+          (user ? (
+            <div className="container" >
+              <MovieTabs type={type} changeTab={this.changeTab} />
+              <MovieList type={type} />
+            </div>
+          ) : (
+              <LoginForm getUser={this.getUser} />
+            ))
+        }
       </div>
     );
   }

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import MovieItem from "./MovieItem";
+import Loader from "./Loader";
 import {
-    API_KEY_3
+    API_KEY_3,
+    API_MOVIE_DB_URL,
+    prepareGetParams
 } from "../utils";
 
 export default class MovieList extends Component {
@@ -28,8 +31,16 @@ export default class MovieList extends Component {
     }
 
     fetchMoviesData = type => {
+
+        const params = {
+            api_key: API_KEY_3,
+            language: 'en-US',
+            region: 'ua',
+            page: 1
+        }
+
         fetch(
-            `https://api.themoviedb.org/3/movie/${type}?api_key=${API_KEY_3}&language=en-US&region=ru&page=1`
+            `${API_MOVIE_DB_URL}movie/${type}?${prepareGetParams(params)}`
         )
             .then(response => {
                 return response.json();
@@ -71,7 +82,7 @@ export default class MovieList extends Component {
                             /> </div >
                         );
                     })
-                ) : (<p> ...Loading </p>)
+                ) : <Loader />
             } </div>
         )
     }
