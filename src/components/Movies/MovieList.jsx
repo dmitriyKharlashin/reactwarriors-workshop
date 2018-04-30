@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import MovieItem from "./MovieItem";
-import Loader from "./Loader";
+import Loader from "../Loader";
 import {
     API_KEY_3,
     API_MOVIE_DB_URL,
     prepareGetParams
-} from "../utils";
+} from "../../utils";
 
 export default class MovieList extends Component {
 
@@ -53,35 +53,26 @@ export default class MovieList extends Component {
             });
     }
 
-    shouldComponentUpdate(prevProps, nextState) {
-
-        console.log('shold component update');
-        console.log('old state', this.state);
-        console.log('new state', nextState);
-
-        return true;
-    }
-
     render() {
         const { movies, isFetched } = this.state;
-
-        console.log('render');
 
         return (<div className="row">
             {
                 isFetched ? (
-                    movies.map(item => {
-                        return (< div className="col-6"
-                            key={
-                                item.id
-                            } >
-                            <
-                                MovieItem item={
-                                    item
-                                }
-                            /> </div >
-                        );
-                    })
+                    ((movies.length > 0) ?
+                        movies.map(item => {
+                            return (< div className="col-4 mb-4"
+                                key={
+                                    item.id
+                                } >
+                                <
+                                    MovieItem item={
+                                        item
+                                    }
+                                /> </div >
+                            );
+                        }) :
+                        <h1>No data</h1>)
                 ) : <Loader />
             } </div>
         )

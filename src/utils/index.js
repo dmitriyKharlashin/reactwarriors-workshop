@@ -6,6 +6,7 @@ export const API_KEY_4 = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYTQ4Z
 
 export const API_MOVIE_DB_URL = 'https://api.themoviedb.org/3/';
 export const API_MOVIE_IMAGE_URL = 'https://image.tmdb.org/t/p/';
+export const API_USER_AVATAR_URL = 'https://secure.gravatar.com/avatar/';
 
 export function prepareGetParams(paramsObject) {
 

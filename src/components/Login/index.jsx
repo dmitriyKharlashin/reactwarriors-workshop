@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { API_MOVIE_DB_URL, prepareGetParams, API_KEY_3 } from '../../utils';
+import { Exception } from "handlebars";
 
 export default class LoginForm extends Component {
 
@@ -50,9 +51,11 @@ export default class LoginForm extends Component {
                         if (response.status < 400) {
                             return response.json();
                         } else {
-                            throw "Invalid username and/or password";
+                            throw new Exception("Invalid username and/or password");
                         }
                     }).then(data => {
+
+                        // start session
                         fetch(
                             `${API_MOVIE_DB_URL}/authentication/session/new?${prepareGetParams({
                                 api_key: API_KEY_3,

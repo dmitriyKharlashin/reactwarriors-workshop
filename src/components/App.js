@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import MovieList from "./MovieList";
-import MovieTabs from "./MovieTabs";
+import Movies from "./Movies";
 import LoginForm from './Login';
 import Loader from "./Loader";
 import { API_MOVIE_DB_URL, prepareGetParams, API_KEY_3 } from '../utils';
@@ -12,8 +11,6 @@ class App extends Component {
 
 
     this.state = {
-      type: 'now_playing',
-      favouritedMoviesCounter: 0,
       isLoaded: false,
       user: null,
       session_id: null
@@ -32,23 +29,6 @@ class App extends Component {
         isLoaded: true
       });
     }
-  }
-
-  markMovieAsFavourited = () => {
-
-    this.setState({
-      favouritedMoviesCounter: ++this.state.favouritedMoviesCounter
-    });
-
-  }
-
-  changeTab = tab => {
-    console.log('tab changed!', tab);
-
-    this.setState({
-      type: tab
-    });
-
   }
 
   getUser = session_id => {
@@ -82,16 +62,14 @@ class App extends Component {
   }
 
   render() {
-    const { type, session_id, user, isLoaded } = this.state;
+    const { user, isLoaded } = this.state;
+
     return (
       <div>
         {!isLoaded ?
           <Loader /> :
           (user ? (
-            <div className="container" >
-              <MovieTabs type={type} changeTab={this.changeTab} />
-              <MovieList type={type} />
-            </div>
+            <Movies user={this.state.user} />
           ) : (
               <LoginForm getUser={this.getUser} />
             ))
