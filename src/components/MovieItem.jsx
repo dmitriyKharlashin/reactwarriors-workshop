@@ -1,4 +1,5 @@
 import React from "react";
+import { API_MOVIE_IMAGE_URL } from '../utils';
 
 export default class MovieItem extends React.Component {
     constructor(props) {
@@ -20,7 +21,7 @@ export default class MovieItem extends React.Component {
                 <img
                     className="card-img-top"
                     style={{ width: '100%', maxHeight: '281px' }}
-                    src={`https://image.tmdb.org/t/p/w500${item.backdrop_path || item.poster_path}`}
+                    src={`${API_MOVIE_IMAGE_URL}w500${item.backdrop_path || item.poster_path}`}
                     alt=""
                 />
                 <div className="card-body">

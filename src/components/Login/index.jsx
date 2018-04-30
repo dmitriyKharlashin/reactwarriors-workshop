@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { API_MOVIE_DB_URL, prepareGetParams, API_KEY_3 } from '../../utils';
 
 export default class LoginForm extends Component {
 
@@ -7,7 +8,7 @@ export default class LoginForm extends Component {
         super();
 
         this.state = {
-            name: null,
+            username: '',
             password: '',
             passwordRepeat: '',
             errors: {
@@ -20,24 +21,84 @@ export default class LoginForm extends Component {
 
         this.setState({
             [event.target.name]: event.target.value,
-            errors: {
-                passwordRepeat: false
-            }
+            errors: {}
         });
     }
 
     onSubmit = event => {
         event.preventDefault();
 
-        if (this.state.password !== this.state.passwordRepeat) {
-            this.setState({
-                errors: {
-                    passwordRepeat: true
-                }
-            });
-        } else {
-            fetch()
+        if (this.validateFields()) {
+            const params = {
+                'api_key': API_KEY_3
+            };
+            const { getUser } = this.props;
+
+            // get the request token            
+            fetch(`${API_MOVIE_DB_URL}/authentication/token/new?${prepareGetParams(params)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const { request_token } = data;
+
+                    // check post authorization                    
+                    fetch(`${API_MOVIE_DB_URL}/authentication/token/validate_with_login?${prepareGetParams({
+                        api_key: API_KEY_3,
+                        username: this.state.username,
+                        password: this.state.password,
+                        request_token: request_token
+                    })}`).then(response => {
+                        if (response.status < 400) {
+                            return response.json();
+                        } else {
+                            throw "Invalid username and/or password";
+                        }
+                    }).then(data => {
+                        fetch(
+                            `${API_MOVIE_DB_URL}/authentication/session/new?${prepareGetParams({
+                                api_key: API_KEY_3,
+                                request_token: request_token
+                            })}`
+                        ).then(response => response.json())
+                            .then(data => {
+                                const { session_id } = data;
+
+                                getUser(session_id);
+                            });
+                    }).catch(error => {
+                        this.setState({
+                            errors: {
+                                base: error
+                            }
+                        });
+                    });
+                });
         }
+    }
+
+    validateFields() {
+        let errorsArray = this.state.errors;
+
+        Object.keys(this.state).forEach((field) => {
+            if (field === 'errors') return;
+
+            if (!this.state[field]) {
+                errorsArray[field] = field[0].toUpperCase() + field.slice(1, field.length) + ' is empty';
+            }
+        });
+
+        if (this.state.password !== this.state.passwordRepeat) {
+            errorsArray.passwordRepeat = 'Passwords are not match';
+        }
+
+        if (errorsArray.length > 0) {
+
+            this.setState({
+                errors: errorsArray
+            });
+            return false;
+        }
+
+        return true;
     }
 
     render() {
@@ -58,6 +119,7 @@ export default class LoginForm extends Component {
                             onChange={this.handleChange}
                         />
                     </div>
+                    {this.state.errors.username && (<div className="invalid-feedback">{this.state.errors.username}</div>)}
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
                         <input
@@ -71,6 +133,7 @@ export default class LoginForm extends Component {
                             onChange={this.handleChange}
                         />
                     </div>
+                    {this.state.errors.password && (<div className="invalid-feedback">{this.state.errors.password}</div>)}
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Repeat Password</label>
                         <input
@@ -84,7 +147,8 @@ export default class LoginForm extends Component {
                             onChange={this.handleChange}
                         />
                     </div>
-                    {this.state.errors.passwordRepeat ? <div className="invalid-feedback">Passwords are not match</div> : null}
+                    {this.state.errors.passwordRepeat && (<div className="invalid-feedback">{this.state.errors.passwordRepeat}</div>)}
+                    {this.state.errors.base && (<div className="invalid-feedback">{this.state.errors.base}</div>)}
                     <button type="submit" className="btn btn-lg btn-primary btn-block" onClick={this.onSubmit}>
                         Sign in
           </button>
