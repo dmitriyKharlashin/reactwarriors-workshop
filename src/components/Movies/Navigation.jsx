@@ -61,11 +61,11 @@ class Navigation extends Component {
                   }.jpg?s=64"`}
                 alt=""
               />
-              <a className="dropdown-toggle d-flex nav-link" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a className="dropdown-toggle d-flex nav-link" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ cursor: "pointer" }}>
                 <h6 className="mb-0">{user.username}</h6>
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a className="dropdown-item" onClick={resetUser}>Logout</a>
+                <a className="dropdown-item" style={{ cursor: "pointer" }} onClick={resetUser}>Logout</a>
               </div>
             </div>
           </div>
