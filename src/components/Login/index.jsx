@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { API_MOVIE_DB_URL, prepareGetParams, API_KEY_3 } from '../../utils';
 import { Exception } from "handlebars";
+import classNames from "classnames";
 
 export default class LoginForm extends Component {
 
@@ -70,7 +71,7 @@ export default class LoginForm extends Component {
                     }).catch(error => {
                         this.setState({
                             errors: {
-                                base: error
+                                global: error
                             }
                         });
                     });
@@ -105,6 +106,9 @@ export default class LoginForm extends Component {
     }
 
     render() {
+
+        const { username, password, passwordRepeat, errors } = this.state;
+
         return (
             <div className="form-login-container">
                 <form className="form-login">
@@ -113,45 +117,51 @@ export default class LoginForm extends Component {
                         <label htmlFor="username">Username</label>
                         <input
                             type="text"
-                            className="form-control"
+                            className={classNames("form-control", {
+                                invalid: errors.global || errors.username
+                            })}
                             id="username"
                             name="username"
                             placeholder="Username"
                             ref="username"
-                            value={this.state.username}
+                            value={username}
                             onChange={this.handleChange}
                         />
                     </div>
-                    {this.state.errors.username && (<div className="invalid-feedback">{this.state.errors.username}</div>)}
+                    {errors.username && (<div className="invalid-feedback">{errors.username}</div>)}
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
                         <input
                             type="password"
-                            className='form-control'
+                            className={classNames('form-control',
+                                { invalid: errors.global || errors.password }
+                            )}
                             id="password"
                             name="password"
                             placeholder="Password"
                             ref="password"
-                            value={this.state.password}
+                            value={password}
                             onChange={this.handleChange}
                         />
                     </div>
-                    {this.state.errors.password && (<div className="invalid-feedback">{this.state.errors.password}</div>)}
+                    {errors.password && (<div className="invalid-feedback">{errors.password}</div>)}
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Repeat Password</label>
                         <input
                             type="password"
-                            className="form-control"
+                            className={classNames("form-control", {
+                                invalid: errors.global || errors.passwordRepeat
+                            })}
                             id="repeat-password"
                             name="passwordRepeat"
                             placeholder="Repeat Password"
                             ref="passwordRepeat"
-                            value={this.state.passwordRepeat}
+                            value={passwordRepeat}
                             onChange={this.handleChange}
                         />
                     </div>
-                    {this.state.errors.passwordRepeat && (<div className="invalid-feedback">{this.state.errors.passwordRepeat}</div>)}
-                    {this.state.errors.base && (<div className="invalid-feedback">{this.state.errors.base}</div>)}
+                    {errors.passwordRepeat && (<div className="invalid-feedback">{errors.passwordRepeat}</div>)}
+                    {errors.global && (<div className="invalid-feedback">{errors.global}</div>)}
                     <button type="submit" className="btn btn-lg btn-primary btn-block" onClick={this.onSubmit}>
                         Sign in
           </button>

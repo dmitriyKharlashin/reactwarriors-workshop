@@ -53,7 +53,7 @@ export default class MovieItem extends React.Component {
                             Like
         </button>
                     </div>
-                    {this.state.isShowOverview ? <p>{item.overview}</p> : null}
+                    {this.state.isShowOverview ? (<div><hr /> <p>{item.overview}</p></div>) : null}
                 </div>
             </div>
         );

@@ -61,6 +61,13 @@ class App extends Component {
     })
   }
 
+  resetUser = user => {
+    this.setState({
+      user: null,
+      session_id: null
+    });
+  }
+
   render() {
     const { user, isLoaded } = this.state;
 
@@ -69,7 +76,7 @@ class App extends Component {
         {!isLoaded ?
           <Loader /> :
           (user ? (
-            <Movies user={this.state.user} />
+            <Movies user={this.state.user} resetUser={this.resetUser} />
           ) : (
               <LoginForm getUser={this.getUser} />
             ))

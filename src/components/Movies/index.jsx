@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import MovieList from "./MovieList";
-import MovieTabs from "./MovieTabs";
-import Navigation from "../Navigation";
+import Navigation from "./Navigation";
 
 export default class Movies extends Component {
 
@@ -15,7 +14,6 @@ export default class Movies extends Component {
         };
 
     }
-
 
     markMovieAsFavourited = () => {
 
@@ -36,19 +34,14 @@ export default class Movies extends Component {
 
     render() {
         const { type } = this.state;
-        const { user } = this.props;
+        const { user, resetUser } = this.props;
 
         return (
             <div>
-                <Navigation user={user} />
+                <Navigation user={user} resetUser={resetUser} type={type} changeTab={this.changeTab} />
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            <div className="row mb-3">
-                                <div className="col-12">
-                                    <MovieTabs type={type} changeTab={this.changeTab} />
-                                </div>
-                            </div>
                             <MovieList type={type} />
                         </div>
                     </div>
