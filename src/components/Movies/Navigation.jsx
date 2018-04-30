@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { API_USER_AVATAR_URL } from '../../utils';
+import { API_USER_AVATAR_URL, NOW_PLAYING_MOVIES_TYPE, POPULAR_MOVIES_TYPE, UPCOMING_MOVIES_TYPE } from '../../utils';
 import classNames from 'classnames';
 
 class Navigation extends Component {
@@ -24,28 +24,28 @@ class Navigation extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className={classNames('nav-item', {
-              active: type === 'now_playing'
+              active: type === NOW_PLAYING_MOVIES_TYPE
             })}>
               <a className="nav-link" onClick={() => {
-                changeTab('now_playing');
+                changeTab(NOW_PLAYING_MOVIES_TYPE);
               }}>
                 Now playing <span className="sr-only">(current)</span>
               </a>
             </li>
             <li className={classNames('nav-item', {
-              active: type === 'upcoming'
+              active: type === UPCOMING_MOVIES_TYPE
             })}>
               <a className="nav-link" onClick={() => {
-                changeTab('upcoming');
+                changeTab(UPCOMING_MOVIES_TYPE);
               }}>
                 Upcoming <span className="sr-only">(current)</span>
               </a>
             </li>
             <li className={classNames('nav-item', {
-              active: type === 'popular'
+              active: type === POPULAR_MOVIES_TYPE
             })}>
               <a className="nav-link" onClick={() => {
-                changeTab('popular');
+                changeTab(POPULAR_MOVIES_TYPE);
               }}>
                 Popular <span className="sr-only">(current)</span>
               </a>

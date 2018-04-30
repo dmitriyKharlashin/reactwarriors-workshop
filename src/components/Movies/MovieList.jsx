@@ -4,7 +4,9 @@ import Loader from "../Loader";
 import {
     API_KEY_3,
     API_MOVIE_DB_URL,
-    prepareGetParams
+    prepareGetParams,
+    MOVIE_OVERVIEW_LANG,
+    MOVIES_RATE_REGION
 } from "../../utils";
 
 export default class MovieList extends Component {
@@ -34,8 +36,8 @@ export default class MovieList extends Component {
 
         const params = {
             api_key: API_KEY_3,
-            language: 'en-US',
-            region: 'ua',
+            language: MOVIE_OVERVIEW_LANG,
+            region: MOVIES_RATE_REGION,
             page: 1
         }
 

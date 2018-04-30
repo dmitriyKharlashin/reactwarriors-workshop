@@ -8,6 +8,13 @@ export const API_MOVIE_DB_URL = 'https://api.themoviedb.org/3/';
 export const API_MOVIE_IMAGE_URL = 'https://image.tmdb.org/t/p/';
 export const API_USER_AVATAR_URL = 'https://secure.gravatar.com/avatar/';
 
+export const MOVIE_OVERVIEW_LANG = 'en-US';
+export const MOVIES_RATE_REGION = 'ua';
+
+export const NOW_PLAYING_MOVIES_TYPE = 'now_playing';
+export const POPULAR_MOVIES_TYPE = 'popular';
+export const UPCOMING_MOVIES_TYPE = 'upcoming';
+
 export function prepareGetParams(paramsObject) {
 
   const queryParamsString = Object.keys(paramsObject).map((parameterKey) => {

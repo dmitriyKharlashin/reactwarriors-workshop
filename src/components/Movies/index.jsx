@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MovieList from "./MovieList";
 import Navigation from "./Navigation";
+import { NOW_PLAYING_MOVIES_TYPE } from '../../utils';
 
 export default class Movies extends Component {
 
@@ -8,7 +9,7 @@ export default class Movies extends Component {
         super();
 
         this.state = {
-            type: 'now_playing',
+            type: NOW_PLAYING_MOVIES_TYPE,
             favouritedMoviesCounter: 0,
             isLoaded: false,
         };
