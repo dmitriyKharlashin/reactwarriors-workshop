@@ -20,7 +20,7 @@ export default class MovieList extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.type !== nextProps) {
+    if (this.props.type !== nextProps.type) {
       this.setState ({
         isFetched: false,
       });
