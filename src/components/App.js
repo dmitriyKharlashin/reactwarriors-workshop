@@ -7,6 +7,8 @@ import Cookies from 'universal-cookie';
 import moment from 'moment';
 
 class App extends Component {
+  cookie = new Cookies ();
+
   constructor () {
     super ();
 
@@ -18,8 +20,7 @@ class App extends Component {
   }
 
   componentWillMount () {
-    const cookie = new Cookies ();
-    const session_id = cookie.get ('session_id');
+    const session_id = this.cookie.get ('session_id');
 
     if (session_id !== null && session_id !== undefined) {
       this.getUser (session_id);
@@ -33,9 +34,8 @@ class App extends Component {
   getUser = session_id => {
     if (!session_id) return;
 
-    const cookie = new Cookies ();
     const expirationDate = moment ().add ('30', 'minutes');
-    cookie.set ('session_id', session_id, {
+    this.cookie.set ('session_id', session_id, {
       path: '/',
       expires: expirationDate.toDate (),
     });
@@ -68,9 +68,13 @@ class App extends Component {
       session_id: null,
     });
 
-    const cookie = new Cookies ();
     const expirationDate = moment ().subtract ('30', 'minutes');
-    cookie.set ('session_id', this.state.session_id, {
+    this.cookie.set ('session_id', this.state.session_id, {
+      path: '/',
+      expires: expirationDate.toDate (),
+    });
+    // reset all saved cookies
+    this.cookie.set ('tab', -1, {
       path: '/',
       expires: expirationDate.toDate (),
     });

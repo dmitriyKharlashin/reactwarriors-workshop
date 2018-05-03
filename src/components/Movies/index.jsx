@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
+import Cookies from 'universal-cookie';
 import MovieList from './MovieList';
 import MovieInfoModal from './MovieInfoModal';
 import Navigation from './Navigation';
 import {NOW_PLAYING_MOVIES_TYPE} from '../../utils';
 
 export default class Movies extends Component {
+  cookie = new Cookies ();
+
   constructor () {
     super ();
 
     this.state = {
-      type: NOW_PLAYING_MOVIES_TYPE,
+      type: this.getInitTab (),
       favouritedMoviesCounter: 0,
       isLoaded: false,
       showModal: false,
@@ -23,8 +26,14 @@ export default class Movies extends Component {
     });
   };
 
+  getInitTab = () => {
+    return this.cookie.get ('tab') || NOW_PLAYING_MOVIES_TYPE;
+  };
+
   changeTab = tab => {
-    console.log ('tab changed!', tab);
+    this.cookie.set ('tab', tab, {
+      path: '/',
+    });
 
     this.setState ({
       type: tab,
