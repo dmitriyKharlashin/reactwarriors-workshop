@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import ReactModal from 'react-modal';
+import {API_MOVIE_IMAGE_URL} from '../../utils';
 
 export default class MovieInfoModal extends Component {
   render () {
-    const {showModal, handleCloseModal} = this.props;
+    const {expandedMovie, showModal, handleCloseModal} = this.props;
 
     return (
       <div id="movieInfoModal" className="modal">
         <ReactModal
           isOpen={showModal}
+          appElement={document.getElementById ('root')}
           contentLabel="onRequestClose Example"
           onRequestClose={handleCloseModal}
           className="Modal"
@@ -22,7 +24,6 @@ export default class MovieInfoModal extends Component {
               height: '100%',
               paddingTop: '100px',
               overflow: 'auto',
-              backgroundColor: 'rgb(0, 0, 0)',
               backgroundColor: 'rgba(0, 0, 0, 0.4)',
             },
             content: {
@@ -39,9 +40,33 @@ export default class MovieInfoModal extends Component {
             },
           }}
         >
-          <span className="close" onClick={handleCloseModal}>&times;</span>
-
-          <p>Modal text!</p>
+          <div className="modal-header">
+            <h4 className="text-center">{expandedMovie.title}</h4>
+            <span className="close" onClick={handleCloseModal}>&times;</span>
+          </div>
+          <div className="modal-body">
+            <div className="container">
+              <div className="row mb-2 mt-2">
+                <img
+                  className="col-5"
+                  style={{width: '100%', maxHeight: '281px'}}
+                  src={`${API_MOVIE_IMAGE_URL}w500${expandedMovie.backdrop_path || expandedMovie.poster_path}`}
+                  alt=""
+                />
+                <div className="col-7">
+                  <p>{expandedMovie.overview}</p>
+                  <p>
+                    <b>Original language:</b> {expandedMovie.original_language}
+                  </p>
+                  <p><b>Rating:</b> {expandedMovie.vote_average}</p>
+                  <p>
+                    <b>Release date:</b> {expandedMovie.release_date}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer" />
         </ReactModal>
       </div>
     );

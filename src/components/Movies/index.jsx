@@ -13,6 +13,7 @@ export default class Movies extends Component {
       favouritedMoviesCounter: 0,
       isLoaded: false,
       showModal: false,
+      expandedMovie: {},
     };
   }
 
@@ -30,8 +31,8 @@ export default class Movies extends Component {
     });
   };
 
-  handleOpenModal = () => {
-    this.setState ({showModal: true});
+  handleOpenModal = item => () => {
+    this.setState ({showModal: true, expandedMovie: item});
   };
 
   handleCloseModal = () => {
@@ -39,7 +40,7 @@ export default class Movies extends Component {
   };
 
   render () {
-    const {type, showModal} = this.state;
+    const {type, expandedMovie, showModal} = this.state;
     const {user, resetUser} = this.props;
 
     return (
@@ -60,6 +61,7 @@ export default class Movies extends Component {
         <MovieInfoModal
           showModal={showModal}
           handleCloseModal={this.handleCloseModal}
+          expandedMovie={expandedMovie}
         />
       </div>
     );

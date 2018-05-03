@@ -35,9 +35,9 @@ export default class MovieItem extends React.Component {
           <div className="d-flex justify-content-between align-items-center">
             <button
               className="btn btn-sm btn-primary"
-              onClick={handleOpenModal}
+              onClick={handleOpenModal (item)}
             >
-              {!this.state.isShowOverview ? 'More' : 'Less'}
+              More
             </button>
             <button
               className="btn btn-sm btn-primary"
@@ -54,9 +54,6 @@ export default class MovieItem extends React.Component {
               Like
             </button>
           </div>
-          {this.state.isShowOverview
-            ? <div><hr /> <p>{item.overview}</p></div>
-            : null}
         </div>
       </div>
     );
