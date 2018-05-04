@@ -1,9 +1,10 @@
 import React from 'react';
-import {API_MOVIE_IMAGE_URL} from '../../utils';
+import { API_MOVIE_IMAGE_URL } from '../../utils';
+import MoviePoster from './MoviePoster';
 
 export default class MovieItem extends React.Component {
-  constructor (props) {
-    super (props);
+  constructor(props) {
+    super(props);
 
     this.state = {
       likeCount: 0,
@@ -11,21 +12,16 @@ export default class MovieItem extends React.Component {
     };
   }
 
-  render () {
+  render() {
     const {
       item = {},
-      markMovieAsFavourited = () => {},
-      handleOpenModal = () => {},
+      markMovieAsFavourited = () => { },
+      handleOpenModal = () => { },
     } = this.props;
 
     return (
-      <div className="card" style={{width: '100%', marginBottom: '15px'}}>
-        <img
-          className="card-img-top"
-          style={{width: '100%', maxHeight: '281px'}}
-          src={`${API_MOVIE_IMAGE_URL}w500${item.backdrop_path || item.poster_path}`}
-          alt=""
-        />
+      <div className="card" style={{ width: '100%', marginBottom: '15px' }}>
+        <MoviePoster className="card-image-top" item={item} />
         <div className="card-body">
           <h6 className="card-title">{item.title}</h6>
           <div className="d-flex justify-content-between align-items-center">
@@ -35,7 +31,7 @@ export default class MovieItem extends React.Component {
           <div className="d-flex justify-content-between align-items-center">
             <button
               className="btn btn-sm btn-primary"
-              onClick={handleOpenModal (item)}
+              onClick={handleOpenModal(item)}
             >
               More
             </button>
@@ -43,12 +39,12 @@ export default class MovieItem extends React.Component {
               className="btn btn-sm btn-primary"
               onClick={() => {
                 if (!this.state.likeCount) {
-                  markMovieAsFavourited ();
+                  markMovieAsFavourited();
                 }
 
-                this.setState ({
-                  likeCount: this.state.likeCount + 1,
-                });
+                this.setState(prevState => ({
+                  likeCount: prevState.likeCount + 1,
+                }));
               }}
             >
               Like

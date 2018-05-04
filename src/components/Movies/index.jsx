@@ -1,56 +1,56 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
 import MovieList from './MovieList';
-import MovieInfoModal from './MovieInfoModal';
+import MovieInfoModal from '../MovieInfoModal';
 import Navigation from './Navigation';
-import {NOW_PLAYING_MOVIES_TYPE} from '../../utils';
+import { NOW_PLAYING_MOVIES_TYPE } from '../../utils';
 
 export default class Movies extends Component {
-  cookie = new Cookies ();
+  cookie = new Cookies();
 
-  constructor () {
-    super ();
+  constructor() {
+    super();
 
     this.state = {
-      type: this.getInitTab (),
+      type: this.getInitTab(),
       favouritedMoviesCounter: 0,
       isLoaded: false,
       showModal: false,
-      expandedMovie: {},
+      modalMovieId: null,
     };
   }
 
   markMovieAsFavourited = () => {
-    this.setState ({
-      favouritedMoviesCounter: this.state.favouritedMoviesCounter + 1,
-    });
+    this.setState(prevState => ({
+      favouritedMoviesCounter: prevState.favouritedMoviesCounter + 1,
+    }));
   };
 
   getInitTab = () => {
-    return this.cookie.get ('tab') || NOW_PLAYING_MOVIES_TYPE;
+    return this.cookie.get('tab') || NOW_PLAYING_MOVIES_TYPE;
   };
 
   changeTab = tab => {
-    this.cookie.set ('tab', tab, {
+    this.cookie.set('tab', tab, {
       path: '/',
     });
 
-    this.setState ({
+    this.setState({
       type: tab,
     });
   };
 
   handleOpenModal = item => () => {
-    this.setState ({showModal: true, expandedMovie: item});
+    this.setState({ showModal: true, modalMovieId: item.id });
   };
 
   handleCloseModal = () => {
-    this.setState ({showModal: false});
+    this.setState({ showModal: false });
   };
 
-  render () {
-    const {type, expandedMovie, showModal} = this.state;
-    const {user, resetUser} = this.props;
+  render() {
+    const { type, modalMovieId, showModal } = this.state;
+    const { user, resetUser } = this.props;
 
     return (
       <div>
@@ -70,7 +70,7 @@ export default class Movies extends Component {
         <MovieInfoModal
           showModal={showModal}
           handleCloseModal={this.handleCloseModal}
-          expandedMovie={expandedMovie}
+          movieId={modalMovieId}
         />
       </div>
     );
